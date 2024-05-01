@@ -1,68 +1,120 @@
-#include <stdio.h>
-#include <stdlib.h>
-#define max 3
-
-int dado[max];
-int topo=0;
-int op;
-
-void exibir(void){
-     printf("\n");
-        for(int temp=topo-1;temp >=0 ;temp--)
-    {
-      printf("Na posicao %d temos %d\n",temp,dado[temp]);
-    }
-     printf("\n");
-     system("PAUSE");
-}
-
-void inserir(void){
-    if (topo==max){
-          printf("A pilha esta cheia.\n");
-      }
-      else {
-           printf("Digite o valor para entrar na pilha: \n");
-           scanf("%d",&dado[topo]);
-           topo++;
-           } 
-     exibir();
-}
-
-void remover(void){
-    if (topo==0){
-           printf("\nA pilha esta vazia\n");     
-                }
-    else {
-         printf("\nRetirado o valor %d da pilha\n",dado[topo-1]);
-         topo--;         
-         }    
-    exibir();
-            
-}
-
-int menu(){
-    printf("-= Programa Pilha em C =-\n\n");
-    printf("   Para inserir digite      1\n");
-    printf("   Para remover digite      2\n");
-    printf("   Para exibir digite       3\n\n");
-    printf("   Para sair                4\n");
-    scanf("%d",&op);
-    switch (op){
-        case 1 : inserir(); 
-             break;
-        case 2 : remover();
-             break;
-        case 3 : exibir();  
-             break;
-           }
-    return 0;
-}
+//Usando pilha
+#include<conio.h>
+#include<stdio.h>
+#include<windows.h>
 
 
-int main(){
-    while (op!=4){
-          system("cls");
-          menu();
-          } 
-    return 0;          
-}
+
+struct no{
+    int valor;
+    no *anterior;
+};
+
+no *topo;
+
+
+void pilhavazia(){
+    topo=NULL;
+}//fecha pilhavazia
+
+void empilha(int pvalor){
+    no *novo;
+    novo= (no*)malloc(sizeof(no));    
+    novo->valor=pvalor;
+    novo->anterior=topo;
+    topo=novo;
+
+    
+//Novo nó (anterior) aponta para topo;
+//Topo aponta para o novo nó
+
+
+    printf("Elemento %d inserido com sucesso",novo->valor);
+    getch();
+    system("cls");
+}//fecha empilha
+
+
+void mostra(){
+    no *aux=topo;
+    if(topo== NULL){
+    	printf("A pilha esta vazia!");
+	}else{
+		while(aux!=NULL){
+	        printf("\n%d",aux->valor);
+	        aux=aux->anterior;
+    	}//fecha while	
+	}
+    
+    getch();
+    system("cls");
+    
+}//fecha mostra
+
+
+void excluirTudo(){
+    no *aux=topo;
+    while(aux!=NULL){
+        topo=aux->anterior;
+        free(aux);
+        aux=topo;
+    }//fecha while
+    printf("Pilha excluida com sucesso");
+    getch();
+    system("cls");
+}//fim excluir
+
+void excluirTopo(){
+    no *aux=topo;
+    
+        topo=aux->anterior;
+        free(aux);
+        aux=topo;
+    printf("Topo excluido com sucesso");
+    getch();
+    system("cls");
+}//fim excluir
+
+
+main(){
+    int valor,op;
+    
+    do{
+        printf("Escolha uma op��o");
+        printf("\nDigite 0 para sair");
+        printf("\nDigite 1 para inserir");
+        printf("\nDigite 2 para mostrar a pilha");
+        printf("\nDigite 3 para exibir o valor do topo");
+        printf("\nDigite 4 para excluir toda pilha");
+        printf("\nDigite 5 para exclui topo da pilha");
+        scanf("%d",&op);
+        
+        switch(op){
+                
+                case 1: 
+                    printf("Digite o valor que deseja inserir: ");
+                    scanf("%d",&valor);
+                    empilha(valor);
+                    break;
+                    
+                case 2:
+                    mostra();
+                    break;
+                case 3:
+                    printf("\n%d",topo->valor);
+                    getch();
+                    system("cls");
+                    break;
+                case 4:
+                    excluirTudo();
+                    break;
+                case 5: 
+                	excluirTopo();
+                	break;
+                    
+        }//fecha switch
+        
+    }while(op!=0);
+    
+    
+}//fecha main
